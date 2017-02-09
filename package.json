@@ -1,0 +1,26 @@
+{
+  "name": "redis-koa-app-rpf",
+  "version": "0.1.1",
+  "description": "Redis-based caching proxy for Google Maps API queries.",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --cache src",
+    "development": "NODE_ENV=development node --harmony lib/index.js"
+  },
+  "author": "@evanxsummers",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.7"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanx/redis-koa-app-rpf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evanx/redis-koa-app-rpf/issues"
+  },
+  "homepage": "https://github.com/evanx/redis-koa-app-rpf#readme"
+}
