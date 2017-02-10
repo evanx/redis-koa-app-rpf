@@ -20,4 +20,4 @@ The following projects reuse this application archetype:
 https://github.com/evanx/geo-proxy
 
 <hr>
-https://twitter.com/evanxsummers
+Follow https://twitter.com/@evanxsummers
