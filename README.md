@@ -3,6 +3,8 @@
 
 Redis Koa2 application archetype.
 
+Named in honour of https://en.wikipedia.org/wiki/Richard_Feynman 
+
 ## Usage
 
 The `lib/index.js` entry-point uses the `redis-koa-app-rpf` application archetype.
