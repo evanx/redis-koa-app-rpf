@@ -69,8 +69,10 @@ module.exports = async (spec, main) => {
         await main({
             app, api,
             assert, clc, lodash, Promise,
-            asserta, asserto, DataError, multiExecAsync,
-            redis, client, logger, config, ends
+            asserta, asserto, 
+            DataError, StatusDataError,
+            redis, client, logger, config, ends,
+            multiExecAsync
         });
         app.use(bodyParser());
         app.use(api.routes());
