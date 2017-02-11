@@ -23,10 +23,10 @@ function DataError(message, data) {
     Error.captureStackTrace(this, this.constructor);
 }
 
-function StatusDataError(message, status, data) {
+function StatusError(message, statusCode, data) {
    this.name = 'StatusError';
    this.message = message;
-   this.status = status;
+   this.statusCode = statusCode;
    this.data = data;
    this.constructor.prototype.__proto__ = Error.prototype;
    Error.captureStackTrace(this, this.constructor);
