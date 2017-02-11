@@ -23,6 +23,15 @@ function DataError(message, data) {
     Error.captureStackTrace(this, this.constructor);
 }
 
+function StatusDataError(message, status, data) {
+   this.name = 'StatusError';
+   this.message = message;
+   this.status = status;
+   this.data = data;
+   this.constructor.prototype.__proto__ = Error.prototype;
+   Error.captureStackTrace(this, this.constructor);
+}
+
 function asserta(actual, expected) {
     if (actual !== expected) {
         throw new DataError('Unexpected', {actual, expected});
