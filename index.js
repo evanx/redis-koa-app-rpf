@@ -70,7 +70,7 @@ module.exports = async (spec, main) => {
             app, api,
             assert, clc, lodash, Promise,
             asserta, asserto, 
-            DataError, StatusDataError,
+            DataError, StatusError,
             redis, client, logger, config, ends,
             multiExecAsync
         });
