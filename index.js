@@ -63,7 +63,7 @@ module.exports = async (spec, main) => {
             asserta, asserto, DataError, multiExecAsync,
             redis, client, logger, config, ends
         });
-        //app.use(bodyParser());
+        app.use(bodyParser());
         app.use(api.routes());
         app.use(async (ctx, ...args) => {
             console.log(args);
