@@ -1,8 +1,8 @@
 {
   "name": "redis-koa-app-rpf",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Redis Koa application archetype.",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint --cache src",
     "development": "NODE_ENV=development node --harmony lib/index.js"
