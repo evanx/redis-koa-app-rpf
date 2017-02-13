@@ -1,8 +1,8 @@
 {
   "name": "redis-koa-app-rpf",
-  "version": "0.5.3",
-  "description": "Redis-based caching proxy for Google Maps API queries.",
-  "main": "src/index.js",
+  "version": "0.5.4",
+  "description": "Redis Koa application archetype.",
+  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint --cache src",
     "development": "NODE_ENV=development node --harmony lib/index.js"
