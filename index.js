@@ -78,7 +78,7 @@ module.exports = async (spec, main) => {
         app.use(api.routes());
         app.use(async (ctx, ...args) => {
             console.log(args);
-           ctx.statusCode = 404;
+            ctx.statusCode = 404;
         });
         const server = app.listen(config.httpPort);
         logger.info('listen', config.httpPort);
