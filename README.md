@@ -17,7 +17,7 @@ where we extract the `config` from `process.env` according to the `spec` and inv
 
 The following projects reuse this application archetype:
 
-https://github.com/evanx/geo-proxy
+https://github.com/evanx/geo-cache
 
 <hr>
 
