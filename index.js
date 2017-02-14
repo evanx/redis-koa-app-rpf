@@ -64,6 +64,7 @@ module.exports = async (spec, main) => {
         ends.push(() => new Promise(() => client.end(false)));
         const logger = redisLogger(config, redis);
         logger.level = config.loggerLevel;
+        logger.info({config});
         const app = new Koa();
         const api = KoaRouter();
         await main({
