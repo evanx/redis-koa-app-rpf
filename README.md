@@ -16,6 +16,7 @@ where we extract the `config` from `process.env` according to the `spec` and inv
 ## Used by:
 
 - https://github.com/evanx/geo-cache
+- https://github.com/evanx/resend
 
 <hr>
 
