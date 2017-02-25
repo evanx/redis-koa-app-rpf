@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app-rpf",
-  "version": "0.6.16",
+  "version": "0.6.17",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {
