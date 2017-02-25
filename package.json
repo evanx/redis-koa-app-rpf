@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app-rpf",
-  "version": "0.6.5",
+  "version": "0.6.16",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "@evanxsummers",
   "license": "ISC",
   "dependencies": {
-    "app-spec": "^0.6.5",
+    "app-spec": "^0.6.16",
     "bluebird": "^3.4.6",
     "cli-color": "^1.1.0",
     "koa": "^2.0.0-alpha.7",
