@@ -78,9 +78,7 @@ module.exports = async (spec, main) => {
         app.use(bodyParser());
         app.use(api.routes());
         app.use(async ctx => {
-            console.error(Object.keys(ctx));
-            console.error(Object.keys(ctx.request));
-            console.error(ctx.request.url);
+            logger.debug('404', ctx.request.url);
             ctx.statusCode = 404;
         });
         const server = app.listen(config.httpPort);
