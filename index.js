@@ -67,6 +67,13 @@ module.exports = async (spec, main) => {
         logger.info({config});
         const app = new Koa();
         const api = KoaRouter();
+        const routeAnalyticsKey = [config.redisNamespace, 'route:count:h'].join(':');
+        api.get('/favicon.ico', async ctx => {
+            ctx.statusCode = 404;
+            multiExecAsync(client, multi => {
+               multi.hincrby(routeAnalyticsKey, 'favicon', 1);
+            });
+        });
         await main({
             app, api,
             assert, clc, lodash, Promise,
@@ -80,6 +87,9 @@ module.exports = async (spec, main) => {
         app.use(async ctx => {
             logger.debug('404', ctx.request.url);
             ctx.statusCode = 404;
+            multiExecAsync(client, multi => {
+               multi.hincrby(routeAnalyticsKey, '404', 1);
+            });
         });
         const server = app.listen(config.httpPort);
         logger.info('listen', config.httpPort);
