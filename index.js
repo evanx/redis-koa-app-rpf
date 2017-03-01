@@ -45,17 +45,13 @@ function asserto(object) {
     }
 }
 
-const debug = () => undefined;
-
-module.exports = async (spec, main) => {
-    debug(`redisApp '${spec.description}' {${Object.keys(spec.required).join(', ')}}`);
+module.exports = async (pkg, spec, main) => {
     const ends = [];
     const end = code => Promise.all(ends.map(end => {
         end().catch(err => console.error('end', err.message));
     })).then(() => process.exit(code));
     try {
-        const defaults = spec[process.env.NODE_ENV || 'production'];
-        const config = appSpec(spec, process.env, {defaults});
+        const config = appSpec(pkg, spec);
         const client = redis.createClient({
             host: config.redisHost,
             port: config.redisPort,
@@ -77,7 +73,7 @@ module.exports = async (spec, main) => {
         await main({
             app, api,
             assert, clc, lodash, Promise,
-            asserta, asserto, 
+            asserta, asserto,
             DataError, StatusError,
             redis, client, logger, config, ends,
             multiExecAsync
@@ -97,7 +93,14 @@ module.exports = async (spec, main) => {
             server.close();
         });
     } catch (err) {
-        console.error(['', clc.red.bold(err.message), ''].join('\n'));
+        console.error();
+        console.error(clc.red.bold(err.message));
+        if (err.data) {
+            console.error(clc.yellow(JSON.stringify(err.data, null, 2)));
+        } else {
+          console.error();
+          console.error(err.stack);
+        }
         end(1);
     }
 };
