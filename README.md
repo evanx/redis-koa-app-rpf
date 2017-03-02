@@ -1,9 +1,7 @@
 
-# redis-koa-app-rpf
+# redis-koa-app
 
 Redis Koa2 application archetype.
-
-Named in honour of https://en.wikipedia.org/wiki/Richard_Feynman 
 
 This provides lifecycle boilerplate reused across similar applications.
 
@@ -11,7 +9,7 @@ This provides lifecycle boilerplate reused across similar applications.
 
 The app's `index.js` entry-point uses the `redis-koa-app-rpf` application archetype.
 ```
-require('redis-koa-app-rpf')(
+require('redis-koa-app')(
     require('../package'),
     require('./spec'),
     require('./main')
@@ -24,7 +22,7 @@ where we extract the `config` from `process.env` according to the `spec` and inv
 
 ## Implementation 
 
-See `index.js` https://github.com/evanx/redis-koa-app-rpf/blob/master/index.js
+See `index.js` https://github.com/evanx/redis-koa-app/blob/master/index.js
 
 
 ## Uses

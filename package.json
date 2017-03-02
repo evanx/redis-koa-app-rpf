@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app",
-  "version": "0.7.15",
+  "version": "0.8.0",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {
@@ -26,10 +26,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/evanx/redis-koa-app-rpf.git"
+    "url": "https://github.com/evanx/redis-koa-app.git"
   },
   "bugs": {
-    "url": "https://github.com/evanx/redis-koa-app-rpf/issues"
+    "url": "https://github.com/evanx/redis-koa-app/issues"
   },
-  "homepage": "https://github.com/evanx/redis-koa-app-rpf#readme"
+  "homepage": "https://github.com/evanx/redis-koa-app#readme"
 }
