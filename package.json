@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {

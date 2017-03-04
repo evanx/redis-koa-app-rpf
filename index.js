@@ -86,11 +86,11 @@ const mapRedisK = (spec, config) => {
         throw new DataError('Redis key spec', {invalidKeys});
     }
     return mapProperties(
-       redisK, 
-       meta => 
-       typeof meta.key === 'string' && meta.key[0] === ':' ?
-       config.redisNamespace + meta.key :
-       meta.key
+        redisK,
+        meta =>
+        typeof meta.key === 'string' && meta.key[0] === ':' ?
+        config.redisNamespace + meta.key :
+        meta.key
     );
 }
 
@@ -136,6 +136,21 @@ module.exports = async (pkg, specf, mainf) => {
             multiExecAsync(client, multi => {
                 multi.hincrby(routeAnalyticsKey, 'favicon', 1);
             });
+        });
+        app.use(async (ctx, next) => {
+            try {
+                await next();
+            } catch (err) {
+                if (err.data) {
+                    ctx.status = err.statusCode || err.status || 400;
+                    ctx.body = {
+                        message: err.message,
+                        data: err.data
+                    };
+                } else {
+                    throw err;
+                }
+            }
         });
         app.use(bodyParser());
         app.use(api.routes());
