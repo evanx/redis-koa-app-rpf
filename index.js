@@ -144,7 +144,7 @@ module.exports = async (pkg, specf, mainf) => {
                 if (err.data) {
                     ctx.status = err.statusCode || err.status || 400;
                     ctx.body = {
-                        error: err.message,
+                        errorMessage: err.message,
                         status: ctx.status,
                         data: err.data
                     };
