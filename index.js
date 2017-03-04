@@ -85,13 +85,23 @@ const mapRedisK = (spec, config) => {
     if (invalidKeys.length) {
         throw new DataError('Redis key spec', {invalidKeys});
     }
-    return mapProperties(redisK, meta => meta.key);
+    return mapProperties(
+       redisK, 
+       meta => 
+       typeof meta.key === 'string' && meta.key[0] === ':' ?
+       config.redisNamespace + meta.key :
+       meta.key
+    );
 }
 
 module.exports = async (pkg, specf, mainf) => {
     try {
         const spec = specf(pkg);
         const config = appSpec(pkg, specf);
+        config.redisHost = config.redisHost || config.host;
+        config.redisPort = config.redisPort || config.port;
+        config.redisPassword = config.redisPassword || config.password;
+        config.redisNamespace = config.redisNamespace || config.namespace;
         const client = redis.createClient({
             host: config.redisHost,
             port: config.redisPort,
