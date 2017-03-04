@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {
@@ -10,13 +10,14 @@
   "author": "@evanxsummers",
   "license": "ISC",
   "dependencies": {
-    "app-spec": "^0.7.14",
+    "app-spec": "^0.7.18",
     "bluebird": "^3.4.6",
     "cli-color": "^1.1.0",
     "koa": "^2.0.0-alpha.7",
     "koa-bodyparser": "^3.2.0",
     "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
+    "map-properties": "^0.1.2",
     "multi-exec-async": "^0.2.0",
     "redis": "^2.6.4",
     "redis-logger-rpf": "^0.2.0"

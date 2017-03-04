@@ -4,6 +4,7 @@ const lodash = require('lodash');
 const redis = require('redis');
 const bluebird = require('bluebird');
 const clc = require('cli-color');
+const mapProperties = require('map-properties');
 const multiExecAsync = require('multi-exec-async');
 const redisLogger = require('redis-logger-rpf');
 const appSpec = require('app-spec');
@@ -24,12 +25,12 @@ function DataError(message, data) {
 }
 
 function StatusError(message, statusCode, data) {
-   this.name = 'StatusError';
-   this.message = message;
-   this.statusCode = statusCode;
-   this.data = data;
-   this.constructor.prototype.__proto__ = Error.prototype;
-   Error.captureStackTrace(this, this.constructor);
+    this.name = 'StatusError';
+    this.message = message;
+    this.statusCode = statusCode;
+    this.data = data;
+    this.constructor.prototype.__proto__ = Error.prototype;
+    Error.captureStackTrace(this, this.constructor);
 }
 
 function asserta(actual, expected) {
@@ -45,38 +46,86 @@ function asserto(object) {
     }
 }
 
-module.exports = async (pkg, spec, main) => {
-    const ends = [];
-    const end = code => Promise.all(ends.map(end => {
-        end().catch(err => console.error('end', err.message));
-    })).then(() => process.exit(code));
+const printError = err => {
+    console.error();
+    console.error(clc.red.bold(err.message));
+    if (err.data) {
+        console.error(clc.yellow(JSON.stringify(err.data, null, 2)));
+    } else {
+        console.error();
+        console.error(err.stack);
+    }
+};
+
+const exits = [];
+
+const shutdown = () => Promise.all(exits.map(async exit => {
     try {
-        const config = appSpec(pkg, spec);
+        await exit();
+    } catch(err) {
+        console.error('exit', err.message)
+    }
+}));
+
+const exitOk = async () => {
+    await shutdown();
+    process.exit(0);
+};
+
+const exitError = async err => {
+    printError(err);
+    await shutdown();
+    process.exit(1);
+};
+
+const mapRedisK = (spec, config) => {
+    assert(typeof spec.redisK === 'function', 'redisK function');
+    const redisK = spec.redisK(config);
+    const invalidKeys = Object.keys(redisK).filter(key => redisK[key].key === undefined);
+    if (invalidKeys.length) {
+        throw new DataError('Redis key spec', {invalidKeys});
+    }
+    return mapProperties(redisK, meta => meta.key);
+}
+
+module.exports = async (pkg, specf, mainf) => {
+    try {
+        const spec = specf(pkg);
+        const config = appSpec(pkg, specf);
         const client = redis.createClient({
             host: config.redisHost,
             port: config.redisPort,
             password: config.redisPassword
         });
-        ends.push(() => new Promise(() => client.end(false)));
+        exits.push(() => new Promise(() => client.end(false)));
         const logger = redisLogger(config, redis);
         logger.level = config.loggerLevel;
         logger.info({config});
+        const redisApp = {
+            assert, clc, lodash, Promise,
+            asserta, asserto,
+            DataError, StatusError,
+            redis, client, logger, config,
+            multiExecAsync
+        };
+        if (spec.redisK) {
+            redisApp.redisK = mapRedisK(spec, config);
+        }
         const app = new Koa();
         const api = KoaRouter();
+        if (process.env.NODE_ENV !== 'production' && process.env.apiExit) {
+            logger.info('apiExit');
+            api.get(process.env.apiExit, async ctx => {
+                logger.warn('apiExit');
+                shutdown();
+            });
+        }
         const routeAnalyticsKey = [config.redisNamespace, 'route:count:h'].join(':');
         api.get('/favicon.ico', async ctx => {
             ctx.statusCode = 404;
             multiExecAsync(client, multi => {
-               multi.hincrby(routeAnalyticsKey, 'favicon', 1);
+                multi.hincrby(routeAnalyticsKey, 'favicon', 1);
             });
-        });
-        await main({
-            app, api,
-            assert, clc, lodash, Promise,
-            asserta, asserto,
-            DataError, StatusError,
-            redis, client, logger, config, ends,
-            multiExecAsync
         });
         app.use(bodyParser());
         app.use(api.routes());
@@ -84,23 +133,15 @@ module.exports = async (pkg, spec, main) => {
             logger.debug('404', ctx.request.url);
             ctx.statusCode = 404;
             multiExecAsync(client, multi => {
-               multi.hincrby(routeAnalyticsKey, '404', 1);
+                multi.hincrby(routeAnalyticsKey, '404', 1);
             });
         });
         const server = app.listen(config.httpPort);
         logger.info('listen', config.httpPort);
-        ends.push(async () => {
-            server.close();
-        });
+        exits.push(async () => server.close());
+        Object.assign(global, {redisApp}, redisApp);
+        await mainf()(api);
     } catch (err) {
-        console.error();
-        console.error(clc.red.bold(err.message));
-        if (err.data) {
-            console.error(clc.yellow(JSON.stringify(err.data, null, 2)));
-        } else {
-          console.error();
-          console.error(err.stack);
-        }
-        end(1);
+        exitError(err);
     }
 };

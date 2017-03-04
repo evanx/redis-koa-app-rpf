@@ -12,7 +12,7 @@ The app's `index.js` entry-point uses the `redis-koa-app-rpf` application archet
 require('redis-koa-app')(
     require('../package'),
     require('./spec'),
-    require('./main')
+    () => require('./main')
 ).catch(err => {
     console.error(err);
 });
@@ -20,7 +20,7 @@ require('redis-koa-app')(
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
 
-## Implementation 
+## Implementation
 
 See `index.js` https://github.com/evanx/redis-koa-app/blob/master/index.js
 
@@ -40,4 +40,3 @@ Inter alia:
 <hr>
 
 https://twitter.com/@evanxsummers
-
