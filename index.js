@@ -61,6 +61,7 @@ const exits = [];
 
 const shutdown = () => Promise.all(exits.map(async exit => {
     try {
+        await Promise.delay(500);
         await exit();
     } catch(err) {
         console.error('exit', err.message)
@@ -107,8 +108,9 @@ module.exports = async (pkg, specf, mainf) => {
             port: config.redisPort,
             password: config.redisPassword
         });
-        exits.push(() => new Promise(() => client.end(false)));
         const logger = redisLogger(config, redis);
+        exits.push(() => new Promise(() => client.end(true)));
+        exits.push(() => new Promise(() => logger.end()));
         logger.level = config.loggerLevel;
         logger.info({config});
         const redisApp = {
