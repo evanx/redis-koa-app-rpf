@@ -95,6 +95,16 @@ const mapRedisK = (spec, config) => {
     );
 }
 
+process.stdout.on('error', err => {
+    if (err.code === 'EPIPE') {
+        console.error(clc.cyan(`stdout EPIPE`));
+        process.exit(0);
+    } else {
+        console.error(clc.red(err.message));
+        process.exit(1);
+    }
+});
+
 module.exports = async (pkg, specf, mainf) => {
     try {
         const spec = specf(pkg);
