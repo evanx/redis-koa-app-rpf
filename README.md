@@ -12,6 +12,7 @@ The app's `index.js` entry-point uses the `redis-koa-app-rpf` application archet
 require('redis-koa-app')(
     require('../package'),
     require('./spec'),
+    async deps => Object.assign(global, deps),    
     () => require('./main')
 ).catch(err => {
     console.error(err);
@@ -19,6 +20,16 @@ require('redis-koa-app')(
 ```
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
+In the above example, we assign the archetype's dependencies on `global` before `main.js` is parsed i.e. including:
+```javascript
+    const redisApp = {
+        assert, clc, lodash, Promise,
+        asserta, asserto,
+        DataError, StatusError,
+        redis, client, logger, config,
+        multiExecAsync
+    };
+```
 
 ## Implementation
 
@@ -33,9 +44,7 @@ See `index.js` https://github.com/evanx/redis-koa-app/blob/master/index.js
 ## Used by:
 
 Inter alia:
-- https://github.com/evanx/geo-cache
-- https://github.com/evanx/refind
-- https://github.com/evanx/resend
+- https://github.com/evanx/reslack
 
 <hr>
 
