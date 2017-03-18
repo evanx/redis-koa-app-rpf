@@ -105,7 +105,7 @@ process.stdout.on('error', err => {
     }
 });
 
-module.exports = async (pkg, specf, mainf) => {
+module.exports = async (pkg, specf, prepare, mainf) => {
     try {
         const spec = specf(pkg);
         const config = appSpec(pkg, specf, process.env);
@@ -177,7 +177,7 @@ module.exports = async (pkg, specf, mainf) => {
         const server = app.listen(config.httpPort);
         logger.info('listen', config.httpPort);
         exits.push(async () => server.close());
-        Object.assign(global, {redisApp}, redisApp);
+	await prepare(redisApp);
         await mainf()(api);
     } catch (err) {
         exitError(err);
