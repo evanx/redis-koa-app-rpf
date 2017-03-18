@@ -178,7 +178,10 @@ module.exports = async (pkg, specf, prepare, mainf) => {
         logger.info('listen', config.httpPort);
         exits.push(async () => server.close());
 	await prepare(redisApp);
-        await mainf()(api);
+        const result = await mainf()(api);
+        if (result === false) {
+            exitOk();
+        }
     } catch (err) {
         exitError(err);
     }
