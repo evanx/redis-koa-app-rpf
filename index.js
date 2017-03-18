@@ -108,7 +108,7 @@ process.stdout.on('error', err => {
 module.exports = async (pkg, specf, mainf) => {
     try {
         const spec = specf(pkg);
-        const config = appSpec(pkg, specf);
+        const config = appSpec(pkg, specf, process.env);
         config.redisHost = config.redisHost || config.host;
         config.redisPort = config.redisPort || config.port;
         config.redisPassword = config.redisPassword || config.password;
