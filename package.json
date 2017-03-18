@@ -1,6 +1,6 @@
 {
   "name": "redis-koa-app",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Redis Koa application archetype.",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "map-properties": "^0.1.2",
     "multi-exec-async": "^0.2.0",
     "redis": "^2.6.4",
-    "redis-logger-rpf": "^0.3.3"
+    "redis-logger-rpf": "^0.3.4"
   },
   "devDependencies": {
     "eslint": "^3.12.2"
